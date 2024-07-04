@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Tasky</string>
+    <string name="valid">Valid</string>
+    <string name="email_address">Email address</string>
+    <string name="log_in">Log in</string>
 </resources>
