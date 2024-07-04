@@ -9,10 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,14 +19,12 @@ import com.cp.tasky.ui.theme.MEDIUM_8_DP
 fun UserInputTextField(
     modifier: Modifier = Modifier,
     hint: String = "",
-    showTrailingIcon: Boolean = false,
     trailingIcon: ImageVector,
-    iconContentDescription: String
+    iconContentDescription: String,
+    currentUserInput: String,
+    showTrailingIcon: Boolean,
+    onTextChange: (String) -> Unit
 ) {
-
-    // TODO: Move this state to viewModel
-    var userInput by remember { mutableStateOf("") }
-
     TextField(
         modifier = modifier
             .fillMaxWidth(),
@@ -47,9 +41,9 @@ fun UserInputTextField(
                     tint = Color.Green.copy(green = 0.7f)
                 )
         },
-        value = userInput,
-        onValueChange = {
-            userInput = it
+        value = currentUserInput,
+        onValueChange = { newText ->
+             onTextChange(newText)
         },
         label = {
             Text(hint)
@@ -59,14 +53,15 @@ fun UserInputTextField(
     )
 }
 
-
 @Preview
 @Composable
 fun UserInputTextFieldPreview() {
     UserInputTextField(
         hint = "Email address",
-        showTrailingIcon = true,
         trailingIcon = Icons.Default.Check,
-        iconContentDescription = "Valid"
+        iconContentDescription = "Valid",
+        currentUserInput = "sample@gmail.com",
+        showTrailingIcon = false,
+        onTextChange = {},
     )
 }

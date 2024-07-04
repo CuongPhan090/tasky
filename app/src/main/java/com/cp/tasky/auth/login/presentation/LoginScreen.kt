@@ -72,11 +72,16 @@ fun LoginScreen(
                             end = LARGE_16_DP
                         )
                         .height(MAJOR_EXTRA_LARGE_64_DP),
+                    hint = stringResource(R.string.email_address),
                     trailingIcon = Icons.Default.Check,
                     iconContentDescription = stringResource(
                         R.string.valid,
                     ),
-                    hint = stringResource(R.string.email_address)
+                    currentUserInput = viewModel.email.value,
+                    showTrailingIcon = viewModel.isValidEmail(),
+                    onTextChange = { email ->
+                        viewModel.setEmail(email)
+                    }
                 )
 
                 PasswordTextField(
@@ -86,7 +91,15 @@ fun LoginScreen(
                             start = LARGE_16_DP,
                             end = LARGE_16_DP
                         )
-                        .height(MAJOR_EXTRA_LARGE_64_DP)
+                        .height(MAJOR_EXTRA_LARGE_64_DP),
+                    password = viewModel.password.value,
+                    shouldHidePassword = viewModel.shouldHidePassword.value,
+                    passwordIconClick = { negateVisibility ->
+                        viewModel.setHidePassword(negateVisibility)
+                    },
+                    onTextChange = { password ->
+                        viewModel.setPassword(password)
+                    }
                 )
 
                 CallToActionButton(
@@ -97,9 +110,13 @@ fun LoginScreen(
                             end = LARGE_16_DP
                         )
                         .height(MINOR_EXTRA_LARGE_48_DP),
-                    text = stringResource(R.string.log_in)
+                    text = stringResource(R.string.log_in),
+                    validInput = viewModel.isValidEmail() && viewModel.isValidPassword()
                 ) {
-                    Log.d("LoginScreen", "Login")
+                    viewModel.loginUser(
+                        email = viewModel.email.value,
+                        password = viewModel.password.value
+                    )
                 }
 
                 Spacer(modifier = Modifier.weight(.1f))

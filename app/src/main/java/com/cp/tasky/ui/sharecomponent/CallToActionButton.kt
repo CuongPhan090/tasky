@@ -13,17 +13,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.cp.tasky.ui.theme.EXTRA_LARGE_32_DP
-import com.cp.tasky.ui.theme.LARGE_16_DP
 
 @Composable
-fun CallToActionButton(modifier: Modifier = Modifier, text: String, onClickListener: () -> Unit) {
+fun CallToActionButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    validInput: Boolean = false,
+    onClickListener: () -> Unit
+) {
 
     Button(
         onClick = onClickListener,
         modifier = modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(EXTRA_LARGE_32_DP),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+        enabled = validInput
     ) {
         Text(
             text = text.uppercase(),
