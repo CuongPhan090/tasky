@@ -32,9 +32,24 @@ import com.cp.tasky.ui.theme.MAJOR_EXTRA_LARGE_64_DP
 import com.cp.tasky.ui.theme.MINOR_EXTRA_LARGE_48_DP
 
 @Composable
-fun LoginScreen(
+fun LoginScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel()
+) {
+
+    LoginScreen(
+        modifier = modifier,
+        viewState = loginViewModel.loginScreenState,
+        onEvents = loginViewModel::onEvents
+    )
+}
+
+
+@Composable
+private fun LoginScreen(
+    modifier: Modifier = Modifier,
+    viewState: LoginScreenState,
+    onEvents: (LoginScreenEvent) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -72,12 +87,18 @@ fun LoginScreen(
                             end = LARGE_16_DP
                         )
                         .height(MAJOR_EXTRA_LARGE_64_DP),
+                    hint = stringResource(R.string.email_address),
                     trailingIcon = Icons.Default.Check,
                     iconContentDescription = stringResource(
                         R.string.valid,
                     ),
-                    hint = stringResource(R.string.email_address)
-                )
+                    currentUserInput = viewState.email,
+                    showTrailingIcon = viewState.isValidEmail,
+                    onTextChange = { email ->
+                        onEvents(
+                            LoginScreenEvent.SetEmail(email)
+                        )
+                    })
 
                 PasswordTextField(
                     modifier = Modifier
@@ -86,8 +107,19 @@ fun LoginScreen(
                             start = LARGE_16_DP,
                             end = LARGE_16_DP
                         )
-                        .height(MAJOR_EXTRA_LARGE_64_DP)
-                )
+                        .height(MAJOR_EXTRA_LARGE_64_DP),
+                    password = viewState.password,
+                    shouldHidePassword = viewState.shouldHidePassword,
+                    passwordIconClick = { negateVisibility ->
+                        onEvents(
+                            LoginScreenEvent.SetHidePassword(negateVisibility)
+                        )
+                    },
+                    onTextChange = { password ->
+                        onEvents(
+                            LoginScreenEvent.SetPassword(password)
+                        )
+                    })
 
                 CallToActionButton(
                     modifier = Modifier
@@ -97,9 +129,14 @@ fun LoginScreen(
                             end = LARGE_16_DP
                         )
                         .height(MINOR_EXTRA_LARGE_48_DP),
-                    text = stringResource(R.string.log_in)
+                    text = stringResource(R.string.log_in),
+                    validInput = viewState.isValidEmail && viewState.isValidPassword
                 ) {
-                    Log.d("LoginScreen", "Login")
+                    onEvents(
+                        LoginScreenEvent.LoginUser(
+                            email = viewState.email, password = viewState.password
+                        )
+                    )
                 }
 
                 Spacer(modifier = Modifier.weight(.1f))
@@ -122,5 +159,8 @@ fun LoginScreen(
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen()
+    LoginScreen(
+        viewState = LoginScreenState(),
+        onEvents = { LoginScreenEvent.SetEmail("") }
+    )
 }

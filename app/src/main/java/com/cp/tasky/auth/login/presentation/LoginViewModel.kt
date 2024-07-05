@@ -1,5 +1,8 @@
 package com.cp.tasky.auth.login.presentation
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cp.tasky.auth.login.domain.UserLoginValidationUseCase
@@ -14,9 +17,25 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val userLoginValidationUseCase: UserLoginValidationUseCase = UserLoginValidationUseCase()
+    private val userLoginValidationUseCase = UserLoginValidationUseCase()
 
-    fun loginUser(email: String, password: String) {
+    var loginScreenState by mutableStateOf(LoginScreenState())
+        private set
+
+    fun onEvents(event: LoginScreenEvent) {
+        when (event) {
+            is LoginScreenEvent.LoginUser -> loginUser(
+                email = event.email,
+                password = event.password
+            )
+
+            is LoginScreenEvent.SetEmail -> setEmail(email = event.email)
+            is LoginScreenEvent.SetHidePassword -> setHidePassword(visibility = event.visibility)
+            is LoginScreenEvent.SetPassword -> setPassword(password = event.password)
+        }
+    }
+
+    private fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             authRepository.loginUser(
                 UserCredential(
@@ -27,11 +46,25 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun isValidEmail(email: String): Boolean {
-        return userLoginValidationUseCase.isValidEmail(email)
+    private fun setEmail(email: String) {
+        val isValidEmail = userLoginValidationUseCase.isValidEmail(email)
+        loginScreenState = loginScreenState.copy(
+            email = email,
+            isValidEmail = isValidEmail
+        )
     }
 
-    fun isValidPassword(password: String): Boolean {
-        return userLoginValidationUseCase.isValidPassword(password)
+    private fun setPassword(password: String) {
+        val isPasswordValid = userLoginValidationUseCase.isValidPassword(password)
+        loginScreenState = loginScreenState.copy(
+            password = password,
+            isValidPassword = isPasswordValid
+        )
+    }
+
+    private fun setHidePassword(visibility: Boolean) {
+        loginScreenState = loginScreenState.copy(
+            shouldHidePassword = visibility
+        )
     }
 }

@@ -8,10 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -21,17 +17,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.cp.tasky.R
 import com.cp.tasky.ui.theme.MEDIUM_8_DP
 
-
 @Composable
-fun PasswordTextField(modifier: Modifier = Modifier) {
-    // TODO: Move these two states to viewModel
-    var password by remember { mutableStateOf("") }
-    var hidePassword by remember { mutableStateOf(true) }
-
+fun PasswordTextField(
+    modifier: Modifier = Modifier,
+    password: String,
+    shouldHidePassword: Boolean,
+    passwordIconClick: (Boolean) -> Unit,
+    onTextChange: (String) -> Unit
+) {
     TextField(
         value = password,
-        onValueChange = {
-            password = it
+        onValueChange = { newText ->
+            onTextChange(newText)
         },
         shape = RoundedCornerShape(MEDIUM_8_DP),
         modifier = modifier
@@ -41,12 +38,12 @@ fun PasswordTextField(modifier: Modifier = Modifier) {
         },
         trailingIcon = {
             Icon(
-                painter = if (hidePassword) painterResource(id = R.drawable.visitibility_off) else painterResource(
+                painter = if (shouldHidePassword) painterResource(id = R.drawable.visitibility_off) else painterResource(
                     id = R.drawable.visitability_on
                 ),
-                contentDescription = if (hidePassword) "Show password" else "Hide password",
+                contentDescription = if (shouldHidePassword) "Show password" else "Hide password",
                 modifier = Modifier.clickable {
-                    hidePassword = !hidePassword
+                    passwordIconClick(!shouldHidePassword)
                 })
         },
         colors = TextFieldDefaults.colors(
@@ -55,7 +52,7 @@ fun PasswordTextField(modifier: Modifier = Modifier) {
         ),
         singleLine = true,
         maxLines = 1,
-        visualTransformation = if (hidePassword) PasswordVisualTransformation() else VisualTransformation.None
+        visualTransformation = if (shouldHidePassword) PasswordVisualTransformation() else VisualTransformation.None
     )
 }
 
@@ -63,5 +60,5 @@ fun PasswordTextField(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun PasswordTextFieldPreview() {
-    PasswordTextField()
+    PasswordTextField(password = "Password123", shouldHidePassword = true, passwordIconClick = {}) {}
 }
