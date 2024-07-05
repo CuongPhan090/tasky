@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
+import com.cp.tasky.auth.shared.domain.model.LoginResponse
+import com.cp.tasky.core.util.NetworkResult
 import com.cp.tasky.ui.sharecomponent.CallToActionButton
 import com.cp.tasky.ui.sharecomponent.PasswordTextField
 import com.cp.tasky.ui.sharecomponent.PostClickableText
@@ -36,20 +40,20 @@ fun LoginScreenRoot(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-
     LoginScreen(
         modifier = modifier,
         viewState = loginViewModel.loginScreenState,
-        onEvents = loginViewModel::onEvents
+        onEvents = loginViewModel::onEvents,
+        networkState = loginViewModel.loginScreenNetworkState.collectAsStateWithLifecycle().value
     )
 }
-
 
 @Composable
 private fun LoginScreen(
     modifier: Modifier = Modifier,
     viewState: LoginScreenState,
-    onEvents: (LoginScreenEvent) -> Unit
+    onEvents: (LoginScreenEvent) -> Unit,
+    networkState: NetworkResult<LoginResponse>
 ) {
     Column(
         modifier = modifier
@@ -57,6 +61,40 @@ private fun LoginScreen(
             .background(Color.Black),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        when (networkState) {
+            NetworkResult.Idle -> {
+                // Do nothing
+                Log.d(
+                    "LoginScreen",
+                    "Idle Screen"
+                )
+            }
+
+            NetworkResult.Loading -> {
+                //TODO: show progress indicator
+                Log.d(
+                    "LoginScreen",
+                    "Loading Screen"
+                )
+            }
+
+            is NetworkResult.Error -> {
+                //TODO: show alert dialog, invalid email/password
+                Log.d(
+                    "LoginScreen",
+                    "Exception: ${(networkState as? NetworkResult.Error<LoginResponse>)?.exception}"
+                )
+            }
+
+            is NetworkResult.Success -> {
+                //TODO: navigate to agenda screen
+                Log.d(
+                    "LoginScreen",
+                    "Login Successful, ${(networkState as? NetworkResult.Success)?.data?.fullName}"
+                )
+            }
+        }
+
         Text(
             modifier = Modifier.padding(
                 start = EXTRA_LARGE_32_DP,
@@ -161,6 +199,7 @@ private fun LoginScreen(
 fun LoginScreenPreview() {
     LoginScreen(
         viewState = LoginScreenState(),
-        onEvents = { LoginScreenEvent.SetEmail("") }
+        onEvents = { LoginScreenEvent.SetEmail("") },
+        networkState = NetworkResult.Idle
     )
 }
