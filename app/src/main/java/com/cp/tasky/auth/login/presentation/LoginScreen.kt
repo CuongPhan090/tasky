@@ -46,10 +46,10 @@ fun LoginScreenRoot(
 
 
 @Composable
-fun LoginScreen(
+private fun LoginScreen(
     modifier: Modifier = Modifier,
     viewState: LoginScreenState,
-    onEvents: (LoginScreenEvents) -> Unit
+    onEvents: (LoginScreenEvent) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -96,7 +96,7 @@ fun LoginScreen(
                     showTrailingIcon = viewState.isValidEmail,
                     onTextChange = { email ->
                         onEvents(
-                            LoginScreenEvents.SetEmail(email)
+                            LoginScreenEvent.SetEmail(email)
                         )
                     })
 
@@ -112,12 +112,12 @@ fun LoginScreen(
                     shouldHidePassword = viewState.shouldHidePassword,
                     passwordIconClick = { negateVisibility ->
                         onEvents(
-                            LoginScreenEvents.SetHidePassword(negateVisibility)
+                            LoginScreenEvent.SetHidePassword(negateVisibility)
                         )
                     },
                     onTextChange = { password ->
                         onEvents(
-                            LoginScreenEvents.SetPassword(password)
+                            LoginScreenEvent.SetPassword(password)
                         )
                     })
 
@@ -133,7 +133,7 @@ fun LoginScreen(
                     validInput = viewState.isValidEmail && viewState.isValidPassword
                 ) {
                     onEvents(
-                        LoginScreenEvents.LoginUser(
+                        LoginScreenEvent.LoginUser(
                             email = viewState.email, password = viewState.password
                         )
                     )
@@ -161,6 +161,6 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     LoginScreen(
         viewState = LoginScreenState(),
-        onEvents = { LoginScreenEvents.SetEmail("") }
+        onEvents = { LoginScreenEvent.SetEmail("") }
     )
 }

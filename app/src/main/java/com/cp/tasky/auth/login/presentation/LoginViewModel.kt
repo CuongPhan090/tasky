@@ -22,16 +22,16 @@ class LoginViewModel @Inject constructor(
     var loginScreenState by mutableStateOf(LoginScreenState())
         private set
 
-    fun onEvents(event: LoginScreenEvents) {
+    fun onEvents(event: LoginScreenEvent) {
         when (event) {
-            is LoginScreenEvents.LoginUser -> loginUser(
+            is LoginScreenEvent.LoginUser -> loginUser(
                 email = event.email,
                 password = event.password
             )
 
-            is LoginScreenEvents.SetEmail -> setEmail(email = event.email)
-            is LoginScreenEvents.SetHidePassword -> setHidePassword(visibility = event.visibility)
-            is LoginScreenEvents.SetPassword -> setPassword(password = event.password)
+            is LoginScreenEvent.SetEmail -> setEmail(email = event.email)
+            is LoginScreenEvent.SetHidePassword -> setHidePassword(visibility = event.visibility)
+            is LoginScreenEvent.SetPassword -> setPassword(password = event.password)
         }
     }
 
