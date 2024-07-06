@@ -5,7 +5,8 @@ import com.cp.tasky.auth.shared.data.mapper.LoginUserMapper
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
-import com.cp.tasky.core.util.NetworkResult
+import com.cp.tasky.core.data.util.NetworkResult
+import kotlinx.coroutines.CancellationException
 
 class AuthRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
@@ -24,6 +25,9 @@ class AuthRepositoryImpl(
             )
 
         } catch (e: Exception) {
+            // Stop coroutine if it get cancelled, or timeout
+            if (e is CancellationException) throw e
+
             NetworkResult.Error(e)
         }
     }

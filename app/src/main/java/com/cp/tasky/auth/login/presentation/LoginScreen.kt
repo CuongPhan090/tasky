@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
-import com.cp.tasky.core.util.NetworkResult
+import com.cp.tasky.core.data.util.NetworkResult
 import com.cp.tasky.ui.sharecomponent.CallToActionButton
 import com.cp.tasky.ui.sharecomponent.PasswordTextField
 import com.cp.tasky.ui.sharecomponent.PostClickableText

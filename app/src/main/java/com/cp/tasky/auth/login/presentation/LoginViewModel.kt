@@ -9,7 +9,7 @@ import com.cp.tasky.auth.login.domain.UserLoginValidationUseCase
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
-import com.cp.tasky.core.util.NetworkResult
+import com.cp.tasky.core.data.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

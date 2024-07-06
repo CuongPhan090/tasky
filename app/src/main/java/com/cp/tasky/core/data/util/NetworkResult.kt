@@ -1,4 +1,4 @@
-package com.cp.tasky.core.util
+package com.cp.tasky.core.data.util
 
 sealed class NetworkResult<out T> {
     data class Success<out T>(val data: T): NetworkResult<T>()
