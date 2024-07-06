@@ -76,6 +76,9 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Compose lifecycleAware
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     // Dagger Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
@@ -87,6 +90,9 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
+
+    // Network logging interceptor
+    implementation(libs.logging.interceptor)
 
     // Moshi + Retrofit
     implementation(libs.converter.moshi)

@@ -7,8 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cp.tasky.auth.login.domain.UserLoginValidationUseCase
 import com.cp.tasky.auth.shared.domain.AuthRepository
+import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
+import com.cp.tasky.core.data.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +24,8 @@ class LoginViewModel @Inject constructor(
 
     var loginScreenState by mutableStateOf(LoginScreenState())
         private set
+
+    val loginScreenNetworkState = MutableStateFlow<NetworkResult<LoginResponse>>(NetworkResult.Idle)
 
     fun onEvents(event: LoginScreenEvent) {
         when (event) {
@@ -36,8 +41,10 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun loginUser(email: String, password: String) {
+        loginScreenNetworkState.value = NetworkResult.Loading
+
         viewModelScope.launch {
-            authRepository.loginUser(
+            loginScreenNetworkState.value = authRepository.loginUser(
                 UserCredential(
                     email = email,
                     password = password

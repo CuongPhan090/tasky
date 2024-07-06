@@ -14,8 +14,6 @@ class RemoteDataSourceImpl @Inject constructor(
     private val authApi: AuthApi
 ) : RemoteDataSource {
     override suspend fun loginUser(loginApiBody: LoginApiBody): LoginApiResponse {
-        // Handle error case
-
         return authApi.loginUser(loginApiBody)
     }
 }
