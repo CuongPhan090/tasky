@@ -1,26 +1,30 @@
 package com.cp.tasky.auth.login.presentation
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
@@ -61,39 +65,6 @@ private fun LoginScreen(
             .background(Color.Black),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (networkState) {
-            NetworkResult.Idle -> {
-                // Do nothing
-                Log.d(
-                    "LoginScreen",
-                    "Idle Screen"
-                )
-            }
-
-            NetworkResult.Loading -> {
-                //TODO: show progress indicator
-                Log.d(
-                    "LoginScreen",
-                    "Loading Screen"
-                )
-            }
-
-            is NetworkResult.Error -> {
-                //TODO: show alert dialog, invalid email/password
-                Log.d(
-                    "LoginScreen",
-                    "Exception: ${(networkState as? NetworkResult.Error<LoginResponse>)?.exception}"
-                )
-            }
-
-            is NetworkResult.Success -> {
-                //TODO: navigate to agenda screen
-                Log.d(
-                    "LoginScreen",
-                    "Login Successful, ${(networkState as? NetworkResult.Success)?.data?.fullName}"
-                )
-            }
-        }
 
         Text(
             modifier = Modifier.padding(
@@ -117,6 +88,22 @@ private fun LoginScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                if (networkState is NetworkResult.Loading) {
+                    Dialog(onDismissRequest = {}) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(modifier = Modifier.size(100.dp))
+                        }
+                    }
+                }
+
+                if (networkState is NetworkResult.Success) {
+                    // TODO: Navigate to agenda screen
+                }
+
                 UserInputTextField(
                     modifier = Modifier
                         .padding(
@@ -159,6 +146,22 @@ private fun LoginScreen(
                         )
                     })
 
+                if (networkState is NetworkResult.Error) {
+                    Text(
+                        modifier = Modifier
+                            .padding(
+                                top = LARGE_16_DP,
+                                start = LARGE_16_DP,
+                                end = LARGE_16_DP
+                            )
+                            .align(Alignment.Start),
+                        text = "${(networkState as? NetworkResult.Error<LoginResponse>)?.exception}",
+                        color = Color.Red,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
                 CallToActionButton(
                     modifier = Modifier
                         .padding(
@@ -187,7 +190,7 @@ private fun LoginScreen(
                     text = "don't have an account? sign up",
                     clickableText = "sign up"
                 ) {
-                    Log.d("LoginScreen", "Navigate to sign-up screen")
+                    // TODO: navigate to Register screen
                 }
             }
         }
