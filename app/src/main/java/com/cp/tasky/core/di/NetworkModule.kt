@@ -1,8 +1,7 @@
 package com.cp.tasky.core.di
 
 import com.cp.tasky.BuildConfig
-import com.cp.tasky.core.Constants
-import com.cp.tasky.core.Constants.API_HEADER_KEY
+import com.cp.tasky.core.di.Constants.API_HEADER_KEY
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module

@@ -29,7 +29,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
-import com.cp.tasky.core.data.util.NetworkResult
+import com.cp.tasky.core.data.util.DataError
+import com.cp.tasky.core.data.util.Error
+import com.cp.tasky.core.data.util.Result
+import com.cp.tasky.core.presentation.util.getErrorMessage
 import com.cp.tasky.ui.sharecomponent.CallToActionButton
 import com.cp.tasky.ui.sharecomponent.PasswordTextField
 import com.cp.tasky.ui.sharecomponent.PostClickableText
@@ -57,7 +60,7 @@ private fun LoginScreen(
     modifier: Modifier = Modifier,
     viewState: LoginScreenState,
     onEvents: (LoginScreenEvent) -> Unit,
-    networkState: NetworkResult<LoginResponse>
+    networkState: Result<LoginResponse, Error>
 ) {
     Column(
         modifier = modifier
@@ -89,7 +92,7 @@ private fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                if (networkState is NetworkResult.Loading) {
+                if (networkState is Result.Loading) {
                     Dialog(onDismissRequest = {}) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -100,7 +103,7 @@ private fun LoginScreen(
                     }
                 }
 
-                if (networkState is NetworkResult.Success) {
+                if (networkState is Result.Success) {
                     // TODO: Navigate to agenda screen
                 }
 
@@ -146,7 +149,7 @@ private fun LoginScreen(
                         )
                     })
 
-                if (networkState is NetworkResult.Error) {
+                if (networkState is Result.Error) {
                     Text(
                         modifier = Modifier
                             .padding(
@@ -155,7 +158,8 @@ private fun LoginScreen(
                                 end = LARGE_16_DP
                             )
                             .align(Alignment.Start),
-                        text = "${(networkState as? NetworkResult.Error<LoginResponse>)?.exception}",
+                        text = (networkState.error as? DataError)?.getErrorMessage()
+                            ?: stringResource(id = R.string.unknown_error),
                         color = Color.Red,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis
@@ -187,8 +191,8 @@ private fun LoginScreen(
                         .padding(
                             bottom = MAJOR_EXTRA_LARGE_64_DP
                         ),
-                    text = "don't have an account? sign up",
-                    clickableText = "sign up"
+                    text = stringResource(R.string.don_t_have_an_account_sign_up),
+                    clickableText = stringResource(R.string.sign_up)
                 ) {
                     // TODO: navigate to Register screen
                 }
@@ -203,6 +207,6 @@ fun LoginScreenPreview() {
     LoginScreen(
         viewState = LoginScreenState(),
         onEvents = { LoginScreenEvent.SetEmail("") },
-        networkState = NetworkResult.Idle
+        networkState = Result.Idle
     )
 }

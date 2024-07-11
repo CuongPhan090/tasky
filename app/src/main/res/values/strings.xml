@@ -3,4 +3,10 @@
     <string name="valid">Valid</string>
     <string name="email_address">Email address</string>
     <string name="log_in">Log in</string>
+
+    <string name="invalid_email_or_password">Invalid email or password</string>
+    <string name="server_not_available">Invalid email or password</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="don_t_have_an_account_sign_up">don\'t have an account? sign up</string>
+    <string name="sign_up">sign up</string>
 </resources>

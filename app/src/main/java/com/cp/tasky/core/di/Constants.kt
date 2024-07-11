@@ -1,4 +1,4 @@
-package com.cp.tasky.core
+package com.cp.tasky.core.di
 
 object Constants {
 
