@@ -9,7 +9,10 @@ import com.cp.tasky.auth.login.domain.UserLoginValidationUseCase
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
-import com.cp.tasky.core.data.util.NetworkResult
+import com.cp.tasky.core.data.util.Error
+import com.cp.tasky.core.data.util.Result
+import com.cp.tasky.core.data.util.onError
+import com.cp.tasky.core.data.util.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -25,7 +28,7 @@ class LoginViewModel @Inject constructor(
     var loginScreenState by mutableStateOf(LoginScreenState())
         private set
 
-    val loginScreenNetworkState = MutableStateFlow<NetworkResult<LoginResponse>>(NetworkResult.Idle)
+    val loginScreenNetworkState = MutableStateFlow<Result<LoginResponse, Error>>(Result.Idle)
 
     fun onEvents(event: LoginScreenEvent) {
         when (event) {
@@ -41,15 +44,19 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun loginUser(email: String, password: String) {
-        loginScreenNetworkState.value = NetworkResult.Loading
+        loginScreenNetworkState.value = Result.Loading
 
         viewModelScope.launch {
-            loginScreenNetworkState.value = authRepository.loginUser(
+            authRepository.loginUser(
                 UserCredential(
                     email = email,
                     password = password
                 )
-            )
+            ).onSuccess { responseData ->
+                loginScreenNetworkState.value = Result.Success(responseData)
+            }.onError { error ->
+                loginScreenNetworkState.value = Result.Error(error)
+            }
         }
     }
 
