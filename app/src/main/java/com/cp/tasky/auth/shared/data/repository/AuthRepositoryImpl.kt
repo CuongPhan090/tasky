@@ -1,6 +1,9 @@
 package com.cp.tasky.auth.shared.data.repository
 
+import android.content.SharedPreferences
 import com.cp.tasky.auth.login.data.remote.models.LoginApiBody
+import com.cp.tasky.auth.login.data.remote.models.LoginApiResponse
+import com.cp.tasky.auth.shared.data.Constant
 import com.cp.tasky.auth.shared.data.mapper.LoginUserMapper
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
@@ -11,9 +14,12 @@ import com.cp.tasky.core.data.util.Result
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.sql.Time
+import java.util.concurrent.TimeUnit
 
 class AuthRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
+    private val sharedPreferences: SharedPreferences,
 ) : AuthRepository {
 
     override suspend fun loginUser(userCredential: UserCredential): Result<LoginResponse, Error> {
@@ -27,6 +33,8 @@ class AuthRepositoryImpl(
 
                 if (response.isSuccessful) {
                     response.body()?.let {
+                        putResponseToSharedPref(it)
+
                         Result.Success(
                             LoginUserMapper.toLoginResponse(it)
                         )
@@ -48,5 +56,15 @@ class AuthRepositoryImpl(
             if (e is CancellationException) throw e
             Result.Error(error = DataError.Remote.UNKNOWN)
         }
+    }
+
+    private fun putResponseToSharedPref(loginApiResponse: LoginApiResponse) {
+        sharedPreferences.edit().apply {
+            putString(Constant.FULL_NAME, loginApiResponse.fullName)
+            putString(Constant.USER_ID, loginApiResponse.userId)
+            putString(Constant.ACCESS_TOKEN, loginApiResponse.accessToken)
+            putString(Constant.REFRESH_TOKEN, loginApiResponse.refreshToken)
+            putString(Constant.ACCESS_TOKEN_EXP_TIME_STAMP, loginApiResponse.refreshToken)
+        }.apply()
     }
 }
