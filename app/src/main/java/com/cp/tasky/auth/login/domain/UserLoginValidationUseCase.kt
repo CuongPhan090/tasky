@@ -4,10 +4,6 @@ import android.util.Patterns
 
 class UserLoginValidationUseCase {
 
-    fun isValidUserLogin(email: String, password: String): Boolean {
-        return isValidEmail(email) && isValidPassword(password)
-    }
-
     fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }

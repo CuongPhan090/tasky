@@ -3,6 +3,8 @@ package com.cp.tasky.auth.shared.data.repository
 import com.cp.tasky.auth.login.data.remote.models.LoginApiBody
 import com.cp.tasky.auth.shared.data.mapper.LoginUserMapper
 import com.cp.tasky.auth.shared.domain.AuthRepository
+import com.cp.tasky.auth.shared.domain.UserPreferences
+import com.cp.tasky.auth.shared.domain.model.AuthenticatedUser
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
 import com.cp.tasky.core.data.util.DataError
@@ -14,6 +16,7 @@ import kotlinx.coroutines.withContext
 
 class AuthRepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
+    private val userPreferencesImpl: UserPreferences
 ) : AuthRepository {
 
     override suspend fun loginUser(userCredential: UserCredential): Result<LoginResponse, Error> {
@@ -27,6 +30,14 @@ class AuthRepositoryImpl(
 
                 if (response.isSuccessful) {
                     response.body()?.let {
+                        userPreferencesImpl.saveAuthenticatedUser(
+                            AuthenticatedUser(
+                                fullName = it.fullName,
+                                accessToken = it.accessToken,
+                                refreshToken = it.refreshToken
+                            )
+                        )
+
                         Result.Success(
                             LoginUserMapper.toLoginResponse(it)
                         )
