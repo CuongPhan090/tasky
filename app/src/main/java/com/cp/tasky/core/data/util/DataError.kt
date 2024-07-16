@@ -4,6 +4,7 @@ sealed interface DataError: Error{
     enum class Remote: DataError {
         SERVER_NOT_AVAILABLE,
         UNAUTHORIZED,
+        EMAIL_ALREADY_EXIST,
         UNKNOWN
     }
 }

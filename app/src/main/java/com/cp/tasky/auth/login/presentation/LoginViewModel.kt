@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cp.tasky.auth.login.domain.UserLoginValidationUseCase
+import com.cp.tasky.auth.shared.domain.usecase.UserInputAuthValidationUseCase
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.auth.shared.domain.model.UserCredential
@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
-    private val userLoginValidationUseCase = UserLoginValidationUseCase()
+    private val userLoginValidationUseCase = UserInputAuthValidationUseCase()
 
     var loginScreenState by mutableStateOf(LoginScreenState())
         private set

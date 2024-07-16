@@ -10,5 +10,5 @@ interface AuthRepository {
 
     suspend fun loginUser(userCredential: UserCredential): Result<LoginResponse, Error>
 
-    suspend fun registerUser(userRegisterBody: UserRegisterBody)
+    suspend fun registerUser(userRegisterBody: UserRegisterBody): Result<Unit, Error>
 }
