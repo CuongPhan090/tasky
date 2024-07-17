@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.cp.tasky.auth.login.presentation.LoginScreenRoot
+import com.cp.tasky.auth.register.presentation.RegisterScreenRoot
 
 @Composable
 fun SetUpAuthGraph(
@@ -22,7 +23,7 @@ fun SetUpAuthGraph(
         }
 
         composable(route = AuthScreen.Register.route) {
-
+            RegisterScreenRoot()
         }
     }
 }
