@@ -61,18 +61,31 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun registerUser(userRegisterBody: UserRegisterBody) { //TODO: Handle error cases : Result<Nothing, Error>
-        try {
-            remoteDataSource.registerUser(
+    override suspend fun registerUser(userRegisterBody: UserRegisterBody): Result<Unit, Error> {
+        return try {
+            val response = remoteDataSource.registerUser(
                 UserRegisterApiBody(
                     fullName = userRegisterBody.fullName,
                     email = userRegisterBody.email,
                     password = userRegisterBody.password
                 )
             )
+
+            if (response.isSuccessful) {
+                Result.Success(Unit)
+            } else {
+                // We have user inputs validation in-place at FE but existing email can only be validated at BE
+                // We do not want to use message response due to localization support
+                when (response.code()) {
+                    in 400..499 -> Result.Error(error = DataError.Remote.EMAIL_ALREADY_EXIST)
+                    in 500..599 -> Result.Error(error = DataError.Remote.SERVER_NOT_AVAILABLE)
+                    else -> Result.Error(error = DataError.Remote.UNKNOWN)
+                }
+            }
         } catch (e: Exception) {
             // Stop coroutine if it get cancelled, or time out
             if (e is CancellationException) throw e
+            Result.Error(error = DataError.Remote.UNKNOWN)
         }
     }
 }

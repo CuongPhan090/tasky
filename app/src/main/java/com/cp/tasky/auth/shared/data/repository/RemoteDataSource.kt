@@ -11,7 +11,7 @@ interface RemoteDataSource {
 
     suspend fun loginUser(loginApiBody: LoginApiBody): Response<LoginApiResponse>
 
-    suspend fun registerUser(registerApiBody: UserRegisterApiBody)
+    suspend fun registerUser(registerApiBody: UserRegisterApiBody): Response<Nothing>
 }
 
 class RemoteDataSourceImpl @Inject constructor(
@@ -21,7 +21,7 @@ class RemoteDataSourceImpl @Inject constructor(
         return authApi.loginUser(loginApiBody)
     }
 
-    override suspend fun registerUser(registerApiBody: UserRegisterApiBody) {
-        authApi.registerUser(registerApiBody)
+    override suspend fun registerUser(registerApiBody: UserRegisterApiBody): Response<Nothing> {
+        return authApi.registerUser(registerApiBody)
     }
 }
