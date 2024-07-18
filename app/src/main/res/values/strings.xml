@@ -9,4 +9,9 @@
     <string name="unknown_error">Unknown error</string>
     <string name="don_t_have_an_account_sign_up">don\'t have an account? sign up</string>
     <string name="sign_up">sign up</string>
+    <string name="email_already_exist">Email already exist</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="name">Name</string>
+    <string name="get_started">Get Started</string>
+    <string name="go_back">Go Back</string>
 </resources>

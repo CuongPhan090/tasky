@@ -15,6 +15,7 @@ import com.cp.tasky.core.data.util.onError
 import com.cp.tasky.core.data.util.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,10 +26,11 @@ class LoginViewModel @Inject constructor(
 
     private val userLoginValidationUseCase = UserInputAuthValidationUseCase()
 
-    var loginScreenState by mutableStateOf(LoginScreenState())
+    var screenState by mutableStateOf(LoginScreenState())
         private set
 
-    val loginScreenNetworkState = MutableStateFlow<Result<LoginResponse, Error>>(Result.Idle)
+    private val _networkState = MutableStateFlow<Result<LoginResponse, Error>>(Result.Idle)
+    val networkState = _networkState.asStateFlow()
 
     fun onEvents(event: LoginScreenEvent) {
         when (event) {
@@ -44,7 +46,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun loginUser(email: String, password: String) {
-        loginScreenNetworkState.value = Result.Loading
+        _networkState.value = Result.Loading
 
         viewModelScope.launch {
             authRepository.loginUser(
@@ -53,16 +55,16 @@ class LoginViewModel @Inject constructor(
                     password = password
                 )
             ).onSuccess { responseData ->
-                loginScreenNetworkState.value = Result.Success(responseData)
+                _networkState.value = Result.Success(responseData)
             }.onError { error ->
-                loginScreenNetworkState.value = Result.Error(error)
+                _networkState.value = Result.Error(error)
             }
         }
     }
 
     private fun setEmail(email: String) {
         val isValidEmail = userLoginValidationUseCase.isValidEmail(email)
-        loginScreenState = loginScreenState.copy(
+        screenState = screenState.copy(
             email = email,
             isValidEmail = isValidEmail
         )
@@ -70,14 +72,14 @@ class LoginViewModel @Inject constructor(
 
     private fun setPassword(password: String) {
         val isPasswordValid = userLoginValidationUseCase.isValidPassword(password)
-        loginScreenState = loginScreenState.copy(
+        screenState = screenState.copy(
             password = password,
             isValidPassword = isPasswordValid
         )
     }
 
     private fun setHidePassword(visibility: Boolean) {
-        loginScreenState = loginScreenState.copy(
+        screenState = screenState.copy(
             shouldHidePassword = visibility
         )
     }
