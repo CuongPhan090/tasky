@@ -49,9 +49,9 @@ fun LoginScreenRoot(
 ) {
     LoginScreen(
         modifier = modifier,
-        viewState = loginViewModel.loginScreenState,
+        viewState = loginViewModel.screenState,
         onEvents = loginViewModel::onEvents,
-        networkState = loginViewModel.loginScreenNetworkState.collectAsStateWithLifecycle().value
+        networkState = loginViewModel.networkState.collectAsStateWithLifecycle().value
     )
 }
 

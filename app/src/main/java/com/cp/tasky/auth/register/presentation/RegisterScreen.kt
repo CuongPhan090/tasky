@@ -47,17 +47,17 @@ fun RegisterScreenRoot(
 ) {
     RegisterScreen(
         modifier = modifier,
-        viewState = registerViewModel.registerScreenState,
-        networkState = registerViewModel.registerScreenNetworkState.collectAsStateWithLifecycle().value,
+        viewState = registerViewModel.screenState,
+        networkState = registerViewModel.netState.collectAsStateWithLifecycle().value,
         onEvents = registerViewModel::onEvents
     )
 }
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier,
     viewState: RegisterViewState,
     networkState: Result<Unit, Error>, // TODO: Handle network state when it is loading/ success/ error
+    modifier: Modifier = Modifier,
     onEvents: (RegisterScreenEvent) -> Unit,
 ) {
     Column(

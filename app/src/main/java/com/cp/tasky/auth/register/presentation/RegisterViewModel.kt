@@ -14,6 +14,7 @@ import com.cp.tasky.core.data.util.onError
 import com.cp.tasky.core.data.util.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,10 +25,11 @@ class RegisterViewModel @Inject constructor(
 
     private val userInputAuthValidationUseCase = UserInputAuthValidationUseCase()
 
-    var registerScreenState by mutableStateOf(RegisterViewState())
+    var screenState by mutableStateOf(RegisterViewState())
         private set
 
-    val registerScreenNetworkState = MutableStateFlow<Result<Unit, Error>>(Result.Idle)
+    private val _networkState = MutableStateFlow<Result<Unit, Error>>(Result.Idle)
+    val netState = _networkState.asStateFlow()
 
     fun onEvents(registerScreenEvent: RegisterScreenEvent) {
         when (registerScreenEvent) {
@@ -51,7 +53,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun registerUser(userName: String, email: String, password: String) {
-        registerScreenNetworkState.value = Result.Loading
+        _networkState.value = Result.Loading
 
         viewModelScope.launch {
             authRepository.registerUser(
@@ -61,30 +63,30 @@ class RegisterViewModel @Inject constructor(
                     password = password
                 )
             ).onSuccess {
-                registerScreenNetworkState.value = Result.Success(Unit)
+                _networkState.value = Result.Success(Unit)
             }.onError { error ->
-                registerScreenNetworkState.value = Result.Error(error)
+                _networkState.value = Result.Error(error)
             }
         }
     }
 
     private fun setEmail(email: String) {
         val isValidEmail = userInputAuthValidationUseCase.isValidEmail(email)
-        registerScreenState = registerScreenState.copy(
+        screenState = screenState.copy(
             email = email,
             isValidEmail = isValidEmail
         )
     }
 
     private fun setHidePassword(visibility: Boolean) {
-        registerScreenState = registerScreenState.copy(
+        screenState = screenState.copy(
             shouldHidePassword = visibility
         )
     }
 
     private fun setPassword(password: String) {
         val isValidPassword = userInputAuthValidationUseCase.isValidPassword(password)
-        registerScreenState = registerScreenState.copy(
+        screenState = screenState.copy(
             password = password,
             isValidPassword = isValidPassword
         )
@@ -92,7 +94,7 @@ class RegisterViewModel @Inject constructor(
 
     private fun setUserName(userName: String) {
         val isValidUserName = userInputAuthValidationUseCase.isValidName(userName)
-        registerScreenState = registerScreenState.copy(
+        screenState = screenState.copy(
             userName = userName,
             isValidUserName = isValidUserName
         )
