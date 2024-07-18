@@ -2,6 +2,8 @@ package com.cp.tasky.ui.theme
 
 import androidx.compose.ui.unit.dp
 
+val CIRCULAR_PROGRESS_BAR_DIMENS = 100.dp
+
 val MAJOR_EXTRA_LARGE_64_DP = 64.dp
 val MINOR_EXTRA_LARGE_48_DP = 48.dp
 val EXTRA_LARGE_32_DP = 32.dp

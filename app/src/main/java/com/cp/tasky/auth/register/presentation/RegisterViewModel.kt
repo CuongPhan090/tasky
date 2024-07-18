@@ -29,14 +29,10 @@ class RegisterViewModel @Inject constructor(
         private set
 
     private val _networkState = MutableStateFlow<Result<Unit, Error>>(Result.Idle)
-    val netState = _networkState.asStateFlow()
+    val networkState = _networkState.asStateFlow()
 
     fun onEvents(registerScreenEvent: RegisterScreenEvent) {
         when (registerScreenEvent) {
-            RegisterScreenEvent.BackButtonOnClick -> {
-                //TODO: go back to login screen
-            }
-
             is RegisterScreenEvent.RegisterUser -> {
                 registerUser(
                     userName = registerScreenEvent.userName,

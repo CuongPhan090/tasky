@@ -6,5 +6,4 @@ sealed class RegisterScreenEvent {
     data class SetEmail(val email: String): RegisterScreenEvent()
     data class SetPassword(val password: String): RegisterScreenEvent()
     data class SetHidePassword(val visibility: Boolean): RegisterScreenEvent()
-    data object BackButtonOnClick : RegisterScreenEvent()
 }
