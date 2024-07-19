@@ -14,6 +14,7 @@ fun SetUpAuthGraph(
     startDestination: String = AuthScreen.Login.route,
 ) {
 
+    // TODO: Upgrade to type-safe navigation
     NavHost(
         navController = navHostController,
         startDestination = startDestination

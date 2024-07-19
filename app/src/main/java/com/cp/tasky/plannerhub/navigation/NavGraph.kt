@@ -14,6 +14,7 @@ fun SetUpPlannerGraph(
     startDestination: String = PlannerScreen.Agenda.route
 ) {
 
+    // TODO: Upgrade to type-safe navigation
     NavHost(
         modifier = modifier,
         navController = navHostController,
