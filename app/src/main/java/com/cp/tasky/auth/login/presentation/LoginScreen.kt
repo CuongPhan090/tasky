@@ -28,7 +28,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
-import com.cp.tasky.auth.shared.domain.model.LoginResponse
 import com.cp.tasky.core.data.util.DataError
 import com.cp.tasky.core.data.util.Error
 import com.cp.tasky.core.data.util.Result
@@ -45,13 +44,17 @@ import com.cp.tasky.ui.theme.MINOR_EXTRA_LARGE_48_DP
 @Composable
 fun LoginScreenRoot(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onLoginSuccess: () -> Unit,
+    onRegisterScreenClick: () -> Unit
 ) {
     LoginScreen(
         modifier = modifier,
         viewState = loginViewModel.screenState,
         onEvents = loginViewModel::onEvents,
-        networkState = loginViewModel.networkState.collectAsStateWithLifecycle().value
+        networkState = loginViewModel.networkResponse.collectAsStateWithLifecycle(initialValue = null).value,
+        onLoginSuccess = onLoginSuccess,
+        onRegisterScreenClick = onRegisterScreenClick
     )
 }
 
@@ -60,7 +63,9 @@ private fun LoginScreen(
     modifier: Modifier = Modifier,
     viewState: LoginScreenState,
     onEvents: (LoginScreenEvent) -> Unit,
-    networkState: Result<LoginResponse, Error>
+    networkState: LoginEvent?,
+    onLoginSuccess: () -> Unit,
+    onRegisterScreenClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -92,7 +97,7 @@ private fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                if (networkState is Result.Loading) {
+                if (viewState.isLoading) {
                     Dialog(onDismissRequest = {}) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -103,8 +108,8 @@ private fun LoginScreen(
                     }
                 }
 
-                if (networkState is Result.Success) {
-                    // TODO: Navigate to agenda screen
+                if (networkState is LoginEvent.LoginSuccess) {
+                    onLoginSuccess()
                 }
 
                 UserInputTextField(
@@ -149,7 +154,7 @@ private fun LoginScreen(
                         )
                     })
 
-                if (networkState is Result.Error) {
+                if (viewState.errorMessage != null) {
                     Text(
                         modifier = Modifier
                             .padding(
@@ -158,7 +163,7 @@ private fun LoginScreen(
                                 end = LARGE_16_DP
                             )
                             .align(Alignment.Start),
-                        text = (networkState.error as? DataError)?.getErrorMessage()
+                        text = (viewState.errorMessage as? DataError)?.getErrorMessage()
                             ?: stringResource(id = R.string.unknown_error),
                         color = Color.Red,
                         maxLines = 2,
@@ -194,7 +199,7 @@ private fun LoginScreen(
                     text = stringResource(R.string.don_t_have_an_account_sign_up),
                     clickableText = stringResource(R.string.sign_up)
                 ) {
-                    // TODO: navigate to Register screen
+                    onRegisterScreenClick()
                 }
             }
         }
@@ -207,6 +212,8 @@ fun LoginScreenPreview() {
     LoginScreen(
         viewState = LoginScreenState(),
         onEvents = { LoginScreenEvent.SetEmail("") },
-        networkState = Result.Idle
+        networkState = null,
+        onLoginSuccess = {},
+        onRegisterScreenClick = {}
     )
 }

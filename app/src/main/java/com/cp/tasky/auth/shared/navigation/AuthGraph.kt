@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.cp.tasky.auth.login.presentation.LoginScreenRoot
 import com.cp.tasky.auth.register.presentation.RegisterScreenRoot
+import com.cp.tasky.plannerhub.navigation.PlannerScreen
 
 @Composable
 fun SetUpAuthGraph(
@@ -20,11 +21,26 @@ fun SetUpAuthGraph(
         startDestination = startDestination
     ) {
         composable(route = AuthScreen.Login.route) {
-            LoginScreenRoot()
+            LoginScreenRoot(
+                onLoginSuccess = {
+                    navHostController.navigate(route = PlannerScreen.Agenda.route)
+                    // TODO: Implement nested graph and pop the authGraph
+                },
+                onRegisterScreenClick =  {
+                    navHostController.navigate(route = AuthScreen.Register.route)
+                }
+            )
         }
 
         composable(route = AuthScreen.Register.route) {
-            RegisterScreenRoot()
+            RegisterScreenRoot(
+                onBackButtonClick = {
+                    navHostController.navigateUp()
+                },
+                onRegisterSuccess = {
+                    navHostController.navigateUp()
+                }
+            )
         }
     }
 }

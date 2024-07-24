@@ -8,13 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.UserRegisterBody
 import com.cp.tasky.auth.shared.domain.usecase.UserInputAuthValidationUseCase
-import com.cp.tasky.core.data.util.Error
-import com.cp.tasky.core.data.util.Result
 import com.cp.tasky.core.data.util.onError
 import com.cp.tasky.core.data.util.onSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,8 +26,8 @@ class RegisterViewModel @Inject constructor(
     var screenState by mutableStateOf(RegisterViewState())
         private set
 
-    private val _networkState = MutableStateFlow<Result<Unit, Error>>(Result.Idle)
-    val networkState = _networkState.asStateFlow()
+    private val _registerEvent = Channel<RegisterEvent>()
+    val registerEvent = _registerEvent.receiveAsFlow()
 
     fun onEvents(registerScreenEvent: RegisterScreenEvent) {
         when (registerScreenEvent) {
@@ -49,7 +47,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun registerUser(userName: String, email: String, password: String) {
-        _networkState.value = Result.Loading
+        screenState = screenState.copy(isLoading = true, error = null)
 
         viewModelScope.launch {
             authRepository.registerUser(
@@ -59,9 +57,10 @@ class RegisterViewModel @Inject constructor(
                     password = password
                 )
             ).onSuccess {
-                _networkState.value = Result.Success(Unit)
+                _registerEvent.send(RegisterEvent.RegisterSuccess)
+                screenState = screenState.copy(isLoading = false, error = null)
             }.onError { error ->
-                _networkState.value = Result.Error(error)
+                screenState = screenState.copy(isLoading = false, error = error)
             }
         }
     }

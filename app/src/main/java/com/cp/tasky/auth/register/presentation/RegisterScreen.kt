@@ -34,8 +34,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
 import com.cp.tasky.core.data.util.DataError
-import com.cp.tasky.core.data.util.Error
-import com.cp.tasky.core.data.util.Result
 import com.cp.tasky.core.presentation.util.getErrorMessage
 import com.cp.tasky.ui.sharecomponent.CallToActionButton
 import com.cp.tasky.ui.sharecomponent.PasswordTextField
@@ -50,28 +48,34 @@ import com.cp.tasky.ui.theme.MINOR_EXTRA_LARGE_48_DP
 fun RegisterScreenRoot(
     modifier: Modifier = Modifier,
     registerViewModel: RegisterViewModel = hiltViewModel(),
+    onBackButtonClick: () -> Unit,
+    onRegisterSuccess: () -> Unit,
 ) {
     RegisterScreen(
-        modifier = modifier,
         viewState = registerViewModel.screenState,
-        networkState = registerViewModel.networkState.collectAsStateWithLifecycle().value,
-        onEvents = registerViewModel::onEvents
+        modifier = modifier,
+        onEvents = registerViewModel::onEvents,
+        registerEvent = registerViewModel.registerEvent.collectAsStateWithLifecycle(initialValue = null).value,
+        onBackButtonClick = onBackButtonClick,
+        onRegisterSuccess = onRegisterSuccess
     )
 }
 
 @Composable
 fun RegisterScreen(
     viewState: RegisterViewState,
-    networkState: Result<Unit, Error>,
     modifier: Modifier = Modifier,
     onEvents: (RegisterScreenEvent) -> Unit,
+    registerEvent: RegisterEvent?,
+    onBackButtonClick: () -> Unit,
+    onRegisterSuccess: () -> Unit,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
-        if (networkState is Result.Loading) {
+        if (viewState.isLoading) {
             Dialog(onDismissRequest = {}) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.size(CIRCULAR_PROGRESS_BAR_DIMENS))
@@ -79,8 +83,8 @@ fun RegisterScreen(
             }
         }
 
-        if (networkState is Result.Success) {
-            // TODO: navigate to agenda screen and pop auth navGraph
+        if (registerEvent is RegisterEvent.RegisterSuccess) {
+            onRegisterSuccess()
         }
 
         Text(
@@ -170,7 +174,7 @@ fun RegisterScreen(
                     }
                 )
 
-                if (networkState is Result.Error) {
+                if (viewState.error != null) {
                     Text(
                         modifier = Modifier
                             .padding(
@@ -179,7 +183,7 @@ fun RegisterScreen(
                                 end = LARGE_16_DP
                             )
                             .align(Alignment.Start),
-                        text = (networkState.error as? DataError)?.getErrorMessage()
+                        text = (viewState.error as? DataError)?.getErrorMessage()
                             ?: stringResource(id = R.string.unknown_error),
                         color = Color.Red,
                         maxLines = 2,
@@ -221,7 +225,7 @@ fun RegisterScreen(
                             contentColor = Color.White
                         ),
                         onClick = {
-                            // TODO: Navigate to previous (login) screen
+                            onBackButtonClick()
                         }
                     ) {
                         Icon(
@@ -239,5 +243,11 @@ fun RegisterScreen(
 @Preview
 @Composable
 private fun RegisterScreenPreview() {
-    RegisterScreen(viewState = RegisterViewState(), networkState = Result.Idle) {}
+    RegisterScreen(
+        viewState = RegisterViewState(),
+        onEvents = {},
+        registerEvent = null,
+        onBackButtonClick = {},
+        onRegisterSuccess = {}
+    )
 }

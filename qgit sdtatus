@@ -1,0 +1,83 @@
+[33mcommit c3eb17102a6b3e38622c4e20b2f3fbd8ac74be0e[m[33m ([m[1;36mHEAD -> [m[1;32mnavigation-part4[m[33m, [m[1;32mnavigation-part3[m[33m)[m
+Author: CPeeee <cphan1363@gmail.com>
+Date:   Fri Jul 19 01:37:05 2024 -0700
+
+    Navigation - Migrate to Type-safe navigation and nested navGraph
+
+[33mcommit 2fb3b1c73c698824724f8ecfd58277bc59e3a3cd[m[33m ([m[1;31morigin/navigation-part2[m[33m, [m[1;32mnavigation-part2[m[33m)[m
+Author: CPeeee <cphan1363@gmail.com>
+Date:   Thu Jul 18 18:40:37 2024 -0700
+
+    Navigation - connect login and register screen
+
+[33mcommit 9263977d898125bebf0100f0c255c9e9133aecf6[m[33m ([m[1;31morigin/development[m[33m, [m[1;32mdevelopment[m[33m)[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Thu Jul 18 18:05:52 2024 -0700
+
+    Register Screen - Render UI based on network response state (#11)
+
+[33mcommit 6eb71119681f46ea8802a8b237fc17020e1a4ede[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Thu Jul 18 00:00:57 2024 -0700
+
+    Create register screen presentation layer (#10)
+
+[33mcommit cc89d59a62f42cd68650455b1a9c07d01d987cf6[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Tue Jul 16 23:59:03 2024 -0700
+
+    Handle error cases from register feature network call and add user name input validation (#9)
+
+[33mcommit 8503481b26104d0783545265b3ba79252b43b886[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Tue Jul 16 00:43:49 2024 -0700
+
+    Initial set up register data layer (#8)
+
+[33mcommit d93f2cf4cfc796f4e2403fcf33bdb0506e228a35[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Sun Jul 14 23:57:54 2024 -0700
+
+    Initial set up navigation graph (#7)
+
+[33mcommit e7989fbeaa9529589dc0d0ce73c48527d296c7db[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Sat Jul 13 23:35:06 2024 -0700
+
+    Create Login Screen - Part 3.4 - Put login response to sharedPref (#6)
+
+[33mcommit 068726b63eb48cc0618d79ee6172b727b8e67349[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Thu Jul 11 01:27:38 2024 -0700
+
+    Create Login Screen - Part 3.3 - Handle network response error code (#5)
+
+[33mcommit 0c36a99eada0db1656ce301d3e81dfae79fe04d2[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Mon Jul 8 23:18:06 2024 -0700
+
+    Create Login Screen - Part 3.2 - Render UI based on network response state (#4)
+
+[33mcommit 800365ee84f948c76e771c73b406432e84aef637[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Sat Jul 6 10:59:21 2024 -0700
+
+    Create Login Screen - Part 3.1 - Handle network response state (#3)
+
+[33mcommit d9f3283122b42604bdebdf7bc21be7854919eeaa[m
+Author: Cong Phan <18727673+CuongPhan090@users.noreply.github.com>
+Date:   Fri Jul 5 10:34:22 2024 -0700
+
+    Create Login Screen - Part 2 - User input validation (#2)
+
+[33mcommit f9d4fd00deb97bf867b890cddf21bbe9cbdd44e1[m[33m ([m[1;31morigin/loginScreen[m[33m, [m[1;32mloginScreen[m[33m)[m
+Author: CPeeee <cphan1363@gmail.com>
+Date:   Thu Jul 4 00:18:46 2024 -0700
+
+    Create Login Screen - Part 1
+
+[33mcommit 04c2596686980cbb5c9806f9b3214cc9cb577a0a[m
+Author: CPeeee <cphan1363@gmail.com>
+Date:   Mon Jun 24 08:16:18 2024 -0700
+
+    Init commit
