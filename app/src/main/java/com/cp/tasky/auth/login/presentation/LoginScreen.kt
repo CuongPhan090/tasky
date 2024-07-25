@@ -29,8 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cp.tasky.R
 import com.cp.tasky.core.data.util.DataError
-import com.cp.tasky.core.data.util.Error
-import com.cp.tasky.core.data.util.Result
 import com.cp.tasky.core.presentation.util.getErrorMessage
 import com.cp.tasky.ui.sharecomponent.CallToActionButton
 import com.cp.tasky.ui.sharecomponent.PasswordTextField

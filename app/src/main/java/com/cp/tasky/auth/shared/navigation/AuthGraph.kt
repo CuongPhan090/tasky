@@ -1,44 +1,40 @@
 package com.cp.tasky.auth.shared.navigation
 
-import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.navigation
 import com.cp.tasky.auth.login.presentation.LoginScreenRoot
 import com.cp.tasky.auth.register.presentation.RegisterScreenRoot
-import com.cp.tasky.plannerhub.navigation.PlannerScreen
+import com.cp.tasky.agenda.navigation.AgendaScreen
 
-@Composable
-fun SetUpAuthGraph(
-    navHostController: NavHostController = rememberNavController(),
-    startDestination: String = AuthScreen.Login.route,
+fun NavGraphBuilder.setUpAuthGraph(
+    navController: NavHostController,
 ) {
 
-    // TODO: Upgrade to type-safe navigation
-    NavHost(
-        navController = navHostController,
-        startDestination = startDestination
-    ) {
-        composable(route = AuthScreen.Login.route) {
+    navigation<AuthScreen.Route>(startDestination = AuthScreen.Login) {
+        composable<AuthScreen.Login> {
             LoginScreenRoot(
                 onLoginSuccess = {
-                    navHostController.navigate(route = PlannerScreen.Agenda.route)
-                    // TODO: Implement nested graph and pop the authGraph
+                    navController.navigate(route = AgendaScreen.Overview) {
+                        popUpTo(AuthScreen.Route) {
+                            inclusive = true
+                        }
+                    }
                 },
                 onRegisterScreenClick =  {
-                    navHostController.navigate(route = AuthScreen.Register.route)
+                    navController.navigate(route = AuthScreen.Register)
                 }
             )
         }
 
-        composable(route = AuthScreen.Register.route) {
+        composable<AuthScreen.Register> {
             RegisterScreenRoot(
                 onBackButtonClick = {
-                    navHostController.navigateUp()
+                    navController.navigateUp()
                 },
                 onRegisterSuccess = {
-                    navHostController.navigateUp()
+                    navController.navigateUp()
                 }
             )
         }

@@ -1,6 +1,14 @@
 package com.cp.tasky.auth.shared.navigation
 
-sealed class AuthScreen(val route: String) {
-    data object Login: AuthScreen("login")
-    data object Register: AuthScreen("register")
+import kotlinx.serialization.Serializable
+
+sealed class AuthScreen {
+    @Serializable
+    data object Route: AuthScreen()
+
+    @Serializable
+    data object Login : AuthScreen()
+
+    @Serializable
+    data object Register : AuthScreen()
 }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -96,4 +97,10 @@ dependencies {
 
     // Moshi + Retrofit
     implementation(libs.converter.moshi)
+
+    // Serializable
+    implementation(libs.jetbrains.kotlinx.serialization.json)
+
+    // Type-safe navigation
+    implementation(libs.androidx.navigation.compose)
 }
