@@ -103,4 +103,8 @@ dependencies {
 
     // Type-safe navigation
     implementation(libs.androidx.navigation.compose)
+
+    // SplashScreen API
+    implementation(libs.androidx.core.splashscreen)
+
 }
