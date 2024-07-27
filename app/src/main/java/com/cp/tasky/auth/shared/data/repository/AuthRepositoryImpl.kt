@@ -88,4 +88,8 @@ class AuthRepositoryImpl(
             Result.Error(error = DataError.Remote.UNKNOWN)
         }
     }
+
+    override fun isAuthenticatedUser(): Boolean {
+        return userPreferencesImpl.getAuthenticatedUser()?.accessToken?.isNotEmpty() == true
+    }
 }
