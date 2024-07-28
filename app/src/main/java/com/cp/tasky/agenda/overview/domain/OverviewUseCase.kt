@@ -1,7 +1,7 @@
 package com.cp.tasky.agenda.overview.domain
 
 import com.cp.tasky.agenda.overview.domain.model.Overview
-import com.cp.tasky.agenda.shared.data.model.AgendaItem
+import com.cp.tasky.agenda.shared.domain.model.AgendaItem
 
 object AgendaOverviewUseCase {
 

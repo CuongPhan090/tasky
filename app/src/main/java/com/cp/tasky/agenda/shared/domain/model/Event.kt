@@ -1,8 +1,5 @@
-package com.cp.tasky.agenda.shared.data.model
+package com.cp.tasky.agenda.shared.domain.model
 
-import com.squareup.moshi.JsonClass
-
-@JsonClass(generateAdapter = true)
 data class Event(
     val id: String,
     val title: String,
@@ -16,7 +13,6 @@ data class Event(
     val photos: List<Photo>,
 ) : AgendaItem
 
-@JsonClass(generateAdapter = true)
 data class Attendee(
     val email: String,
     val fullName: String,
@@ -26,7 +22,6 @@ data class Attendee(
     val remindAt: Long,
 )
 
-@JsonClass(generateAdapter = true)
 data class Photo(
     val key: String,
     val url: String,

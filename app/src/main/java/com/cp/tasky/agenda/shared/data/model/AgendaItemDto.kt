@@ -1,5 +1,5 @@
 package com.cp.tasky.agenda.shared.data.model
 
-interface AgendaItem {
+interface AgendaItemDto {
     val remindAt: Long
 }
