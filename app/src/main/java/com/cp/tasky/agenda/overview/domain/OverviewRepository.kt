@@ -1,12 +1,13 @@
 package com.cp.tasky.agenda.overview.domain
 
 import com.cp.tasky.agenda.overview.domain.model.Overview
-import java.time.LocalDateTime
+import com.cp.tasky.core.data.util.Error
+import com.cp.tasky.core.data.util.Result
 
 interface OverviewRepository {
-    suspend fun getAgendaByDate(timeStamp: LocalDateTime): Overview
+    suspend fun getAgendaByDate(timeStamp: Long): Result<Overview, Error>
 
-    suspend fun syncAgendaRemotely()
+    suspend fun syncAgendaRemotely(): Result<Unit, Error>
 
-    suspend fun getFullAgenda(): Overview
+    suspend fun getFullAgenda(): Result<Overview, Error>
 }
