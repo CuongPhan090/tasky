@@ -1,10 +1,10 @@
-package com.cp.tasky.agenda.navigation
+package com.cp.tasky.agenda.shared.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 
-fun NavGraphBuilder.setUpPlannerGraph(
+fun NavGraphBuilder.setUpAgendaGraph(
     navController: NavHostController
 ) {
 

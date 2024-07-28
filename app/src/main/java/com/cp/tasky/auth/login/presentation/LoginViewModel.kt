@@ -8,13 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.cp.tasky.auth.shared.domain.AuthRepository
 import com.cp.tasky.auth.shared.domain.model.UserCredential
 import com.cp.tasky.auth.shared.domain.usecase.UserInputAuthValidationUseCase
-import com.cp.tasky.core.data.util.DataError
-import com.cp.tasky.core.data.util.Error
-import com.cp.tasky.core.data.util.Result
 import com.cp.tasky.core.data.util.onError
 import com.cp.tasky.core.data.util.onSuccess
-import com.cp.tasky.core.presentation.util.UiText
-import com.cp.tasky.core.presentation.util.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

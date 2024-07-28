@@ -7,8 +7,8 @@ import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.cp.tasky.agenda.navigation.AgendaScreen
-import com.cp.tasky.agenda.navigation.setUpPlannerGraph
+import com.cp.tasky.agenda.shared.navigation.AgendaScreen
+import com.cp.tasky.agenda.shared.navigation.setUpAgendaGraph
 import com.cp.tasky.auth.shared.navigation.AuthScreen
 import com.cp.tasky.auth.shared.navigation.setUpAuthGraph
 import com.cp.tasky.auth.shared.presentation.AuthViewModel
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     startDestination = if (authViewModel.isAuthenticatedUser) AgendaScreen.Overview else AuthScreen.Route
                 ) {
                     setUpAuthGraph(navController = navController)
-                    setUpPlannerGraph(navController = navController)
+                    setUpAgendaGraph(navController = navController)
                 }
             }
         }

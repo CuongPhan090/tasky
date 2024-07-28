@@ -1,11 +1,8 @@
-package com.cp.tasky.agenda.navigation
+package com.cp.tasky.agenda.shared.navigation
 
 import kotlinx.serialization.Serializable
 
 sealed class AgendaScreen {
-    @Serializable
-    data object Route : AgendaScreen()
-
     @Serializable
     data object Overview : AgendaScreen()
 

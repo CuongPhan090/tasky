@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.cp.tasky.auth.login.presentation.LoginScreenRoot
 import com.cp.tasky.auth.register.presentation.RegisterScreenRoot
-import com.cp.tasky.agenda.navigation.AgendaScreen
+import com.cp.tasky.agenda.shared.navigation.AgendaScreen
 
 fun NavGraphBuilder.setUpAuthGraph(
     navController: NavHostController,
