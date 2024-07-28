@@ -1,6 +1,8 @@
 package com.cp.tasky.agenda.overview.di
 
 import com.cp.tasky.agenda.overview.data.remote.OverviewApi
+import com.cp.tasky.agenda.overview.data.remote.RemoteDataResource
+import com.cp.tasky.agenda.overview.data.remote.RemoteDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,5 +18,11 @@ object OverviewModule {
     @Singleton
     fun providePlannerHubApi(retrofit: Retrofit): OverviewApi {
         return retrofit.create(OverviewApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteDataSource(overviewApi: OverviewApi): RemoteDataResource {
+        return RemoteDataSourceImpl(overviewApi)
     }
 }
