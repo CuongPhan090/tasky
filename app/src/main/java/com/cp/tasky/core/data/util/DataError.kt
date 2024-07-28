@@ -5,6 +5,7 @@ sealed interface DataError: Error{
         SERVER_NOT_AVAILABLE,
         UNAUTHORIZED,
         EMAIL_ALREADY_EXIST,
-        UNKNOWN
+        UNKNOWN,
+        UNABLE_TO_SYNC
     }
 }

@@ -13,7 +13,7 @@ interface OverviewApi {
     suspend fun getAgendaByDate(@Query("time") time: Long): Response<OverviewApiResponse>
 
     @POST("/syncAgenda")
-    suspend fun syncAgenda(@Body agendaSyncRequest: OverviewSyncRequest)
+    suspend fun syncAgenda(@Body agendaSyncRequest: OverviewSyncRequest): Response<Unit>
 
     @GET("/fullAgenda")
     suspend fun getFullAgenda(): Response<OverviewApiResponse>
