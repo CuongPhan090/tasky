@@ -107,4 +107,6 @@ dependencies {
     // SplashScreen API
     implementation(libs.androidx.core.splashscreen)
 
+    // Constraint Layout
+    implementation(libs.androidx.constraintlayout.compose)
 }

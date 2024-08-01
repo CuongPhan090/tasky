@@ -14,4 +14,9 @@
     <string name="name">Name</string>
     <string name="get_started">Get Started</string>
     <string name="go_back">Go Back</string>
+    <string name="unable_to_sync">Unable to sync</string>
+    <string name="more">more</string>
+    <string name="open">Open</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>
