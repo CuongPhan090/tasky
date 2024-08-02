@@ -20,13 +20,13 @@ import com.cp.tasky.ui.theme.MEDIUM_8_DP
 import com.cp.tasky.ui.theme.MEDIUM_LARGE_12_DP
 import com.cp.tasky.ui.theme.SMALL_4_DP
 
-typealias dayOfWeek = String
-typealias dayOfMonth = String
+typealias DayOfWeek = String
+typealias DayOfMonth = String
 
 @Composable
-fun Next6DaysSelector(
+fun NextDaysSelector(
     modifier: Modifier = Modifier,
-    nextSixDays: Map<dayOfMonth, dayOfWeek>,
+    nextSixDays: Map<DayOfMonth, DayOfWeek>,
     currentlySelectedDate: String,
     onDateSelected: (String) -> Unit,
 ) {
@@ -77,7 +77,7 @@ private fun PairOfDayPreview() {
 @Preview
 @Composable
 private fun Next6DaysSelectorPreview() {
-    Next6DaysSelector(
+    NextDaysSelector(
         nextSixDays = mapOf(
             "5" to "S",
             "6" to "M",
